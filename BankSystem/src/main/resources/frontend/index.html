@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数字银行 - 安全便捷的金融服务</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+<!-- 登录页面 -->
+<div class="login-container" id="login-container">
+    <div class="login-card animate__animated animate__fadeIn">
+        <div class="bank-logo">
+            <i class="fas fa-university"></i>
+            <h1>数字银行</h1>
+            <p class="tagline">安全 · 便捷 · 智能</p>
+        </div>
+
+        <!-- 登录表单 -->
+        <div class="login-form" id="login-form">
+            <h2>用户登录</h2>
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="username" placeholder="用户名/手机号" required>
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <div class="password-wrapper">
+                    <input type="password" id="password" placeholder="密码" required>
+                    <i class="fas fa-eye password-toggle" data-target="password"></i>
+                </div>
+            </div>
+            <div class="remember-forgot">
+                <label>
+                    <input type="checkbox" id="remember-me">
+                    <span>记住我</span>
+                </label>
+                <a href="#" class="forgot-link" id="forgot-password-link">忘记密码?</a>
+            </div>
+            <button class="login-btn" id="login-btn">
+                <i class="fas fa-sign-in-alt"></i> 登录
+            </button>
+
+            <div class="signup-link">
+                <p>还没有账户? <a href="#" id="signup-link">立即注册</a></p>
+            </div>
+
+            <div class="security-info">
+                <i class="fas fa-shield-alt"></i>
+                <span>银行级安全加密</span>
+            </div>
+        </div>
+
+        <!-- 注册表单 -->
+        <div class="login-form" id="register-form" style="display: none;">
+            <h2>注册账户</h2>
+            <p class="subtitle">创建您的数字银行账户</p>
+
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="register-fullname" placeholder="请输入真实姓名" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-user-circle"></i>
+                <input type="text" id="register-username" placeholder="请输入用户名（4-20位字母数字）" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="register-email" placeholder="请输入邮箱地址" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-phone"></i>
+                <input type="tel" id="register-phone" placeholder="请输入11位手机号" maxlength="11" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <div class="password-wrapper">
+                    <input type="password" id="register-password" placeholder="请输入密码（8-20位，含大小写字母和数字）" required>
+                    <i class="fas fa-eye password-toggle" data-target="register-password"></i>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <div class="password-wrapper">
+                    <input type="password" id="register-confirm-password" placeholder="请再次输入密码" required>
+                    <i class="fas fa-eye password-toggle" data-target="register-confirm-password"></i>
+                </div>
+            </div>
+
+            <div class="terms-agreement">
+                <label>
+                    <input type="checkbox" id="register-terms" required>
+                    <span>我已阅读并同意 <a href="#" class="terms-link">《数字银行服务协议》</a> 和 <a href="#" class="terms-link">《隐私政策》</a></span>
+                </label>
+            </div>
+
+            <button class="login-btn" id="register-btn">
+                <i class="fas fa-user-plus"></i> 注册
+            </button>
+
+            <div class="signup-link">
+                <p>已有账户? <a href="#" id="login-link">立即登录</a></p>
+            </div>
+
+            <div class="security-info">
+                <i class="fas fa-shield-alt"></i>
+                <span>银行级安全加密保护您的信息</span>
+            </div>
+        </div>
+
+        <!-- 忘记密码表单 -->
+        <div class="login-form" id="forgot-password-form" style="display: none;">
+            <h2>忘记密码</h2>
+            <p class="subtitle">请输入您的邮箱地址，我们将发送重置密码链接</p>
+
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="reset-email" placeholder="请输入注册时使用的邮箱" required>
+            </div>
+
+            <button class="login-btn" id="send-reset-link-btn">
+                <i class="fas fa-paper-plane"></i> 发送重置链接
+            </button>
+
+            <div class="signup-link">
+                <p><a href="#" id="back-to-login">返回登录</a></p>
+            </div>
+        </div>
+
+        <div class="login-footer">
+            <p>© 2024 数字银行. 版权所有.</p>
+            <div class="footer-links">
+                <a href="#">隐私政策</a>
+                <a href="#">服务条款</a>
+                <a href="#">帮助中心</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 通知提示 -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span>登录成功！正在跳转...</span>
+    </div>
+
+    <!-- 模态框容器 -->
+    <div id="modal-overlay" class="modal-overlay"></div>
+</div>
+
+<!-- 主应用容器 (登录后显示) -->
+<div class="app-container" id="app-container">
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="nav-logo">
+                <i class="fas fa-university"></i>
+                <span>数字银行</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#" class="nav-link active" data-page="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>概览</span>
+                </a>
+                <a href="#" class="nav-link" data-page="accounts">
+                    <i class="fas fa-wallet"></i>
+                    <span>账户</span>
+                </a>
+                <a href="#" class="nav-link" data-page="transfer">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>转账</span>
+                </a>
+                <a href="#" class="nav-link" data-page="history">
+                    <i class="fas fa-history"></i>
+                    <span>交易历史</span>
+                </a>
+                <a href="#" class="nav-link" data-page="credit-cards">
+                    <i class="fas fa-credit-card"></i>
+                    <span>信用卡</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="nav-right">
+            <div class="notification-bell" id="notification-bell">
+                <i class="fas fa-bell"></i>
+                <span class="notification-count" id="notification-count">0</span>
+                <div class="notifications-dropdown" id="notifications-dropdown">
+                    <div class="notifications-header">
+                        <h4>通知</h4>
+                        <button id="mark-all-read">全部已读</button>
+                    </div>
+                    <div class="notifications-list" id="notifications-list">
+                        <div class="empty-notifications">暂无通知</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="user-profile" id="user-profile-menu">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-info">
+                    <span class="user-name" id="user-name">加载中...</span>
+                    <span class="user-id" id="user-id">ID: --</span>
+                </div>
+                <i class="fas fa-chevron-down"></i>
+                <div class="user-dropdown" id="user-dropdown">
+                    <a href="#" class="dropdown-item" data-action="profile">
+                        <i class="fas fa-user"></i> 个人信息
+                    </a>
+                    <a href="#" class="dropdown-item" data-action="change-password">
+                        <i class="fas fa-key"></i> 修改密码
+                    </a>
+                    <a href="#" class="dropdown-item" data-action="settings">
+                        <i class="fas fa-cog"></i> 设置
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item logout-item" data-action="logout">
+                        <i class="fas fa-sign-out-alt"></i> 退出登录
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <div id="page-content" class="page-content">
+            <!-- 页面内容将通过JS动态加载 -->
+        </div>
+    </main>
+
+    <!-- 快捷操作面板 -->
+    <div class="quick-actions">
+        <button class="quick-action-btn" id="quick-deposit">
+            <i class="fas fa-plus"></i>
+            <span>快速存款</span>
+        </button>
+        <button class="quick-action-btn" id="quick-transfer">
+            <i class="fas fa-exchange-alt"></i>
+            <span>快速转账</span>
+        </button>
+        <button class="quick-action-btn" id="quick-credit">
+            <i class="fas fa-credit-card"></i>
+            <span>申请信用卡</span>
+        </button>
+        <button class="quick-action-btn" id="quick-statement">
+            <i class="fas fa-file-invoice-dollar"></i>
+            <span>账单管理</span>
+        </button>
+    </div>
+</div>
+
+<!-- 模态框模板 -->
+<div id="modal-templates" style="display: none;">
+    <!-- 存款模态框 -->
+    <div class="modal deposit-modal">
+        <div class="modal-header">
+            <h3>快速存款</h3>
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <form id="deposit-form">
+                <div class="form-group">
+                    <label for="deposit-account">选择账户</label>
+                    <select id="deposit-account" class="form-control" required>
+                        <option value="">请选择存款账户</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="deposit-amount">存款金额</label>
+                    <div class="input-with-suffix">
+                        <input type="number" id="deposit-amount" min="100" max="50000" step="100" required>
+                        <span class="input-suffix">元</span>
+                    </div>
+                    <small class="form-hint">最低100元，最高50,000元</small>
+                </div>
+                <div class="form-group">
+                    <label for="deposit-description">备注（可选）</label>
+                    <input type="text" id="deposit-description" placeholder="存款用途说明">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="submit-deposit">
+                        <i class="fas fa-check"></i> 确认存款
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 取款模态框 -->
+    <div class="modal withdraw-modal">
+        <div class="modal-header">
+            <h3>快速取款</h3>
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <form id="withdraw-form">
+                <div class="form-group">
+                    <label for="withdraw-account">选择账户</label>
+                    <select id="withdraw-account" class="form-control" required>
+                        <option value="">请选择取款账户</option>
+                    </select>
+                    <div class="account-balance" id="withdraw-balance">可用余额: ¥0.00</div>
+                </div>
+                <div class="form-group">
+                    <label for="withdraw-amount">取款金额</label>
+                    <div class="input-with-suffix">
+                        <input type="number" id="withdraw-amount" min="100" step="100" required>
+                        <span class="input-suffix">元</span>
+                    </div>
+                    <small class="form-hint">最低100元</small>
+                </div>
+                <div class="form-group">
+                    <label for="withdraw-description">备注（可选）</label>
+                    <input type="text" id="withdraw-description" placeholder="取款用途说明">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="submit-withdraw">
+                        <i class="fas fa-check"></i> 确认取款
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 账户详情模态框 -->
+    <div class="modal account-detail-modal">
+        <div class="modal-header">
+            <h3>账户详情</h3>
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="account-detail-content" id="account-detail-content">
+                <div class="loading-container">
+                    <div class="loading-spinner"></div>
+                    <p>加载中...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 创建账户模态框 -->
+    <div class="modal create-account-modal">
+        <div class="modal-header">
+            <h3>创建新账户</h3>
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <form id="create-account-form">
+                <div class="form-group">
+                    <label for="account-type">账户类型</label>
+                    <select id="account-type" class="form-control" required>
+                        <option value="">请选择账户类型</option>
+                        <option value="SAVINGS">储蓄账户</option>
+                        <option value="CURRENT">活期账户</option>
+                        <option value="FIXED_DEPOSIT">定期存款</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="account-name">账户名称</label>
+                    <input type="text" id="account-name" placeholder="例如：日常开销账户" required>
+                </div>
+                <div class="form-group">
+                    <label for="initial-deposit">初始存款金额</label>
+                    <div class="input-with-suffix">
+                        <input type="number" id="initial-deposit" min="0" step="100" value="1000">
+                        <span class="input-suffix">元</span>
+                    </div>
+                    <small class="form-hint">储蓄账户最低1000元起存</small>
+                </div>
+                <div class="form-group" id="fixed-deposit-group" style="display: none;">
+                    <label for="deposit-term">存款期限</label>
+                    <select id="deposit-term" class="form-control">
+                        <option value="3">3个月</option>
+                        <option value="6">6个月</option>
+                        <option value="12">1年</option>
+                        <option value="24">2年</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="submit-create-account">
+                        <i class="fas fa-check"></i> 创建账户
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 修改密码模态框 -->
+    <div class="modal change-password-modal">
+        <div class="modal-header">
+            <h3>修改密码</h3>
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <form id="change-password-form">
+                <div class="form-group">
+                    <label for="current-password">当前密码</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="current-password" required>
+                        <i class="fas fa-eye password-toggle"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="new-password">新密码</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="new-password" required>
+                        <i class="fas fa-eye password-toggle"></i>
+                    </div>
+                    <small class="form-hint">8-20位，包含大小写字母和数字</small>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">确认新密码</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="confirm-password" required>
+                        <i class="fas fa-eye password-toggle"></i>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="submit-change-password">
+                        <i class="fas fa-check"></i> 确认修改
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 申请信用卡模态框 -->
+    <div class="modal credit-card-modal">
+        <div class="modal-header">
+            <h3>申请信用卡</h3>
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <form id="credit-card-form">
+                <div class="form-group">
+                    <label for="card-type">卡片类型</label>
+                    <select id="card-type" class="form-control" required>
+                        <option value="">请选择卡片类型</option>
+                        <option value="STANDARD">标准信用卡</option>
+                        <option value="GOLD">金卡</option>
+                        <option value="PLATINUM">白金卡</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="desired-limit">期望额度</label>
+                    <select id="desired-limit" class="form-control" required>
+                        <option value="10000">10,000元</option>
+                        <option value="30000">30,000元</option>
+                        <option value="50000">50,000元</option>
+                        <option value="100000">100,000元</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="monthly-income">月收入（元）</label>
+                    <input type="number" id="monthly-income" min="3000" step="1000" required>
+                </div>
+                <div class="form-group">
+                    <label for="employment-status">就业状况</label>
+                    <select id="employment-status" class="form-control" required>
+                        <option value="EMPLOYED">受雇</option>
+                        <option value="SELF_EMPLOYED">自雇</option>
+                        <option value="STUDENT">学生</option>
+                        <option value="OTHER">其他</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="submit-credit-card">
+                        <i class="fas fa-check"></i> 提交申请
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 生成账单模态框（修复了div未闭合的问题） -->
+    <div class="modal statement-modal">
+        <div class="modal-header">
+            <h3>生成账单</h3>
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <form id="statement-form">
+                <!-- 选择账户：正确闭合form-group -->
+                <div class="form-group">
+                    <label for="statement-account">选择账户</label>
+                    <select id="statement-account" class="form-control" required>
+                        <option value="">请选择账户</option>
+                    </select>
+                </div>
+
+                <!-- 账单周期：独立的form-group，使用fieldset -->
+                <div class="form-group">
+                    <fieldset class="period-fieldset">
+                        <legend>账单周期</legend>
+                        <div class="period-selector">
+                            <div class="period-option">
+                                <input type="radio" id="period-month" name="period" value="month" checked>
+                                <label for="period-month">本月</label>
+                            </div>
+                            <div class="period-option">
+                                <input type="radio" id="period-custom" name="period" value="custom">
+                                <label for="period-custom">自定义</label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <!-- 自定义周期：独立的form-group -->
+                <div class="form-group custom-period" style="display: none;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="start-date">开始日期</label>
+                            <input type="text" id="start-date" class="datepicker" placeholder="选择开始日期">
+                        </div>
+                        <div class="form-group">
+                            <label for="end-date">结束日期</label>
+                            <input type="text" id="end-date" class="datepicker" placeholder="选择结束日期">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 文件格式：独立的form-group -->
+                <div class="form-group">
+                    <label for="statement-format">文件格式</label>
+                    <select id="statement-format" class="form-control">
+                        <option value="PDF">PDF文档</option>
+                        <option value="EXCEL">Excel表格</option>
+                        <option value="CSV">CSV文件</option>
+                    </select>
+                </div>
+
+                <!-- 表单操作 -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="generate-statement">
+                        <i class="fas fa-file-download"></i> 生成账单
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 还款模态框 -->
+    <div class="modal repayment-modal">
+        <div class="modal-header">
+            <h3>信用卡还款</h3>
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <form id="repayment-form">
+                <div class="form-group">
+                    <label for="repayment-card">选择信用卡</label>
+                    <select id="repayment-card" class="form-control" required>
+                        <option value="">请选择信用卡</option>
+                    </select>
+                </div>
+                <div class="card-details" id="card-details">
+                    <div class="detail-item">
+                        <span>账单金额:</span>
+                        <strong id="bill-amount">¥0.00</strong>
+                    </div>
+                    <div class="detail-item">
+                        <span>最低还款:</span>
+                        <strong id="min-payment">¥0.00</strong>
+                    </div>
+                    <div class="detail-item">
+                        <span>还款截止:</span>
+                        <strong id="due-date">--</strong>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="repayment-amount">还款金额</label>
+                    <div class="input-with-suffix">
+                        <input type="number" id="repayment-amount" min="0" step="100" required>
+                        <span class="input-suffix">元</span>
+                    </div>
+                    <div class="repayment-options">
+                        <button type="button" class="btn-option" data-option="full">全额还款</button>
+                        <button type="button" class="btn-option" data-option="min">最低还款</button>
+                        <button type="button" class="btn-option" data-option="custom">自定义</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="repayment-account">还款账户</label>
+                    <select id="repayment-account" class="form-control" required>
+                        <option value="">请选择还款账户</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="submit-repayment">
+                        <i class="fas fa-check"></i> 确认还款
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 转账确认模态框 -->
+    <div class="modal transfer-confirm-modal">
+        <div class="modal-header">
+            <h3>确认转账</h3>
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="transfer-summary" id="transfer-summary">
+                <!-- 转账信息将通过JS动态填充 -->
+            </div>
+            <div class="security-verification">
+                <div class="form-group">
+                    <label for="transfer-password">支付密码</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="transfer-password" placeholder="请输入支付密码" required>
+                        <i class="fas fa-eye password-toggle"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-secondary" id="cancel-transfer">取消</button>
+                <button class="btn btn-primary" id="confirm-transfer">
+                    <i class="fas fa-check"></i> 确认转账
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/zh.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

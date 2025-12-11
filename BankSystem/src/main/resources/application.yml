@@ -1,0 +1,62 @@
+# 服务器配置
+server:
+  port: 8099
+  servlet:
+    context-path: /
+
+# Spring 核心配置
+spring:
+  # 数据库连接配置
+  datasource:
+    url: jdbc:mysql://localhost:3306/digital_bank?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: tswcbyy5018  # 替换为实际MySQL密码
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # JPA/Hibernate 配置
+  jpa:
+    hibernate:
+      ddl-auto: update  # 开发环境：update | 测试/生产：none
+    show-sql: true      # 打印SQL语句（开发用，生产关闭）
+    properties:
+      hibernate:
+        format_sql: true  # 格式化SQL输出
+        # 移除冗余的dialect配置：Hibernate 6.x会自动适配MySQL方言
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+  # 邮件服务配置（QQ邮箱）
+  mail:
+    host: smtp.qq.com
+    port: 587
+    username: 1926272843@qq.com
+    password: hoyiiluyugjpdbdj  # QQ邮箱SMTP授权码（非登录密码）
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true  # 启用TLS加密
+
+  # 静态资源配置
+  web:
+    resources:
+      static-locations:
+        - classpath:/frontend/  # 优先加载前端静态资源
+        # - classpath:/static/  # 保留默认static目录（按需启用）
+
+  # Security自动配置（按需启用注释）
+  # autoconfigure:
+  #   exclude:
+  #     - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+  #     - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+
+# JWT 配置（生产环境建议移至环境变量/配置中心）
+jwt:
+  secret: 8e9f2a7d3b8c4e6a9d8b7c6e5f4a8d9s7b6v5c8x9d7s8a9d7s8a9d7s8a9d7s8  # 至少32位随机字符串
+  expiration: 86400000        # AccessToken过期时间：24小时（毫秒）
+  refresh-expiration: 604800000  # RefreshToken过期时间：7天（毫秒）
+
+# 前端地址配置（解决占位符解析错误）
+app:
+  frontend:
+    url: http://localhost:8099  # 前端项目访问地址（按需修改）
