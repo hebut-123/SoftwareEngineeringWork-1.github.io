@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>银行系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1a3a8f 0%, #2a5bd7 100%);
+            color: white;
+            padding: 25px 0;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            font-size: 28px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info span {
+            margin-right: 15px;
+        }
+
+        nav {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+            justify-content: space-around;
+        }
+
+        .nav-list li {
+            flex: 1;
+            text-align: center;
+        }
+
+        .nav-list a {
+            display: block;
+            padding: 20px 15px;
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-list a:hover, .nav-list a.active {
+            color: #2a5bd7;
+            background-color: #f8f9ff;
+            border-bottom-color: #2a5bd7;
+        }
+
+        .nav-list i {
+            margin-right: 8px;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.07);
+            margin-bottom: 25px;
+        }
+
+        .card h2 {
+            color: #1a3a8f;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+
+        .card h2 i {
+            margin-right: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #444;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #2a5bd7;
+            box-shadow: 0 0 0 3px rgba(42, 91, 215, 0.1);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background-color: #2a5bd7;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #1a3a8f;
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-block {
+            width: 100%;
+            display: block;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+        }
+
+        .btn-success:hover {
+            background-color: #1e7e34;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn-group .btn {
+            flex: 1;
+        }
+
+        .select-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .select-option {
+            border: 2px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .select-option:hover {
+            border-color: #2a5bd7;
+            background-color: #f8f9ff;
+        }
+
+        .select-option.selected {
+            border-color: #2a5bd7;
+            background-color: #eef2ff;
+        }
+
+        .select-option i {
+            font-size: 32px;
+            color: #2a5bd7;
+            margin-bottom: 10px;
+        }
+
+        .result-box {
+            background-color: #f8f9ff;
+            border-left: 4px solid #2a5bd7;
+            padding: 20px;
+            margin-top: 25px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .result-box h4 {
+            color: #1a3a8f;
+            margin-bottom: 10px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #f8f9ff;
+            color: #1a3a8f;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border-left: 4px solid #17a2b8;
+        }
+
+        .verification-step {
+            display: none;
+        }
+
+        .verification-step.active {
+            display: block;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #777;
+            font-size: 14px;
+            border-top: 1px solid #eee;
+        }
+
+        @media (max-width: 768px) {
+            .nav-list {
+                flex-direction: column;
+            }
+
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .user-info {
+                margin-top: 15px;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-university"></i>
+                <span>数字银行系统</span>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul class="nav-list">
+            <li><a href="#" class="nav-link active" data-page="register"><i class="fas fa-user-plus"></i>注册账户</a></li>
+            <li><a href="#" class="nav-link" data-page="transaction"><i class="fas fa-exchange-alt"></i>业务处理</a></li>
+            <li><a href="#" class="nav-link" data-page="risk"><i class="fas fa-shield-alt"></i>风控处理</a></li>
+            <li><a href="#" class="nav-link" data-page="personal"><i class="fas fa-user-circle"></i>个人中心</a></li>
+        </ul>
+    </nav>
+
+    <!-- 注册账户页面 -->
+    <div id="register" class="page active">
+        <div class="card">
+            <h2><i class="fas fa-user-plus"></i>注册账户</h2>
+            <div class="form-group">
+                <label for="phone">手机号码</label>
+                <input type="tel" id="phone" class="form-control" placeholder="请输入11位手机号码">
+            </div>
+
+            <div class="form-group">
+                <label>账户类型</label>
+                <div class="select-group">
+                    <div class="select-option" data-value="personal">
+                        <i class="fas fa-user"></i>
+                        <div>个人账户</div>
+                    </div>
+                    <div class="select-option" data-value="business">
+                        <i class="fas fa-building"></i>
+                        <div>企业账户</div>
+                    </div>
+                </div>
+                <input type="hidden" id="accountType" value="">
+            </div>
+
+            <div class="form-group">
+                <label>分行类型</label>
+                <div class="select-group">
+                    <div class="select-option" data-value="beijing">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>北京分行</div>
+                    </div>
+                    <div class="select-option" data-value="shanghai">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>上海分行</div>
+                    </div>
+                    <div class="select-option" data-value="guangzhou">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>广州分行</div>
+                    </div>
+                    <div class="select-option" data-value="shenzhen">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>深圳分行</div>
+                    </div>
+                </div>
+                <input type="hidden" id="branchType" value="">
+            </div>
+
+            <div class="form-group">
+                <label for="password">账户密码</label>
+                <input type="password" id="password" class="form-control" placeholder="请输入6-20位密码">
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">确认密码</label>
+                <input type="password" id="confirmPassword" class="form-control" placeholder="请再次输入密码">
+            </div>
+
+            <button id="registerBtn" class="btn btn-block">注册账户</button>
+
+            <div class="result-box hidden" id="registerResult">
+                <h4>注册结果</h4>
+                <div id="registerResultContent"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-search"></i>查询账户</h2>
+            <div class="form-group">
+                <label for="searchPhone">手机号码</label>
+                <input type="tel" id="searchPhone" class="form-control" placeholder="请输入要查询的手机号码">
+            </div>
+
+            <button id="searchAccountBtn" class="btn btn-block btn-secondary">查询账户</button>
+
+            <div class="result-box hidden" id="searchResult">
+                <h4>查询结果</h4>
+                <div id="searchResultContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 业务处理页面 -->
+    <div id="transaction" class="page">
+        <div class="card">
+            <h2><i class="fas fa-exchange-alt"></i>业务处理</h2>
+
+            <div class="btn-group">
+                <button id="depositBtn" class="btn"><i class="fas fa-money-bill-wave"></i> 存款</button>
+                <button id="withdrawBtn" class="btn"><i class="fas fa-hand-holding-usd"></i> 取款</button>
+                <button id="transferBtn" class="btn"><i class="fas fa-exchange-alt"></i> 转账</button>
+            </div>
+
+            <!-- 存款界面 -->
+            <div id="depositForm" class="verification-step">
+                <div class="form-group">
+                    <label for="depositAccount">存款账号</label>
+                    <input type="text" id="depositAccount" class="form-control" placeholder="请输入存款账号">
+                </div>
+
+                <div class="form-group">
+                    <label for="depositPassword">账户密码</label>
+                    <input type="password" id="depositPassword" class="form-control" placeholder="请输入账户密码">
+                </div>
+
+                <button id="verifyDepositBtn" class="btn btn-success">验证账户</button>
+
+                <div class="form-group hidden" id="depositAmountGroup">
+                    <label for="depositAmount">存款金额（元）</label>
+                    <input type="number" id="depositAmount" class="form-control" placeholder="请输入存款金额">
+                    <button id="submitDepositBtn" class="btn btn-success" style="margin-top: 15px;">确认存款</button>
+                </div>
+            </div>
+
+            <!-- 取款界面 -->
+            <div id="withdrawForm" class="verification-step hidden">
+                <div class="form-group">
+                    <label for="withdrawAccount">取款账号</label>
+                    <input type="text" id="withdrawAccount" class="form-control" placeholder="请输入取款账号">
+                </div>
+
+                <div class="form-group">
+                    <label for="withdrawPassword">账户密码</label>
+                    <input type="password" id="withdrawPassword" class="form-control" placeholder="请输入账户密码">
+                </div>
+
+                <button id="verifyWithdrawBtn" class="btn btn-success">验证账户</button>
+
+                <div class="form-group hidden" id="withdrawAmountGroup">
+                    <label for="withdrawAmount">取款金额（元）</label>
+                    <input type="number" id="withdrawAmount" class="form-control" placeholder="请输入取款金额">
+                    <button id="submitWithdrawBtn" class="btn btn-success" style="margin-top: 15px;">确认取款</button>
+                </div>
+            </div>
+
+            <!-- 转账界面 -->
+            <div id="transferForm" class="verification-step hidden">
+                <div class="form-group">
+                    <label for="fromAccount">转出账号</label>
+                    <input type="text" id="fromAccount" class="form-control" placeholder="请输入转出账号">
+                </div>
+
+                <div class="form-group">
+                    <label for="toAccount">转入账号</label>
+                    <input type="text" id="toAccount" class="form-control" placeholder="请输入转入账号">
+                </div>
+
+                <div class="form-group">
+                    <label for="transferPassword">转出账户密码</label>
+                    <input type="password" id="transferPassword" class="form-control" placeholder="请输入转出账户密码">
+                </div>
+
+                <div class="form-group">
+                    <label for="transferAmount">转账金额（元）</label>
+                    <input type="number" id="transferAmount" class="form-control" placeholder="请输入转账金额">
+                </div>
+
+                <button id="submitTransferBtn" class="btn btn-success">确认转账</button>
+            </div>
+
+            <div class="result-box hidden" id="transactionResult">
+                <h4>操作结果</h4>
+                <div id="transactionResultContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 风控处理页面 -->
+    <div id="risk" class="page">
+        <div class="card">
+            <h2><i class="fas fa-shield-alt"></i>风控处理</h2>
+            <p>查看银行系统风险控制数据和警报信息。</p>
+
+            <button id="showRiskDataBtn" class="btn btn-block">显示风控数据</button>
+
+            <div class="table-container hidden" id="riskTableContainer">
+                <table id="riskTable">
+                    <thead>
+                    <tr>
+                        <th>风险ID</th>
+                        <th>账户号</th>
+                        <th>风险类型</th>
+                        <th>风险等级</th>
+                        <th>发生时间</th>
+                        <th>状态</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- 风控数据将由JavaScript动态填充 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 个人中心页面 -->
+    <div id="personal" class="page">
+        <div class="card">
+            <h2><i class="fas fa-user-circle"></i>个人中心</h2>
+
+            <!-- 第一步：验证旧密码 -->
+            <div id="verifyOldPasswordStep" class="verification-step active">
+                <div class="form-group">
+                    <label for="forgotPhone">手机号码</label>
+                    <input type="tel" id="forgotPhone" class="form-control" placeholder="请输入您的手机号码">
+                </div>
+
+                <div class="form-group">
+                    <label for="oldPassword">旧密码</label>
+                    <input type="password" id="oldPassword" class="form-control" placeholder="请输入旧密码">
+                </div>
+
+                <button id="verifyOldPasswordBtn" class="btn btn-block">验证旧密码</button>
+            </div>
+
+            <!-- 第二步：设置新密码（默认隐藏） -->
+            <div id="setNewPasswordStep" class="verification-step" style="display: none;">
+                <div class="alert alert-success" style="margin-bottom: 20px;">
+                    <i class="fas fa-check-circle"></i> 旧密码验证成功！现在可以设置新密码。
+                </div>
+
+                <div class="form-group">
+                    <label for="newPassword">新密码</label>
+                    <input type="password" id="newPassword" class="form-control" placeholder="请输入新密码">
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmNewPassword">确认新密码</label>
+                    <input type="password" id="confirmNewPassword" class="form-control" placeholder="请再次输入新密码">
+                </div>
+
+                <button id="submitNewPasswordBtn" class="btn btn-block btn-success">确认重置密码</button>
+
+                <button id="backToVerifyBtn" class="btn btn-block btn-secondary" style="margin-top: 10px;">
+                    <i class="fas fa-arrow-left"></i> 返回重新验证
+                </button>
+            </div>
+
+            <!-- 显示结果 -->
+            <div class="result-box hidden" id="forgotPasswordResult">
+                <h4>重置结果</h4>
+                <div id="forgotPasswordResultContent"></div>
+            </div>
+
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+                <button id="logoutBtn" class="btn btn-block btn-danger"><i class="fas fa-sign-out-alt"></i> 退出登录</button>
+            </div>
+        </div>
+    </div>
+
+
+    <footer>
+        <p>数字银行系统 &copy; 2023 | 安全可靠的银行服务 | 技术支持热线: 400-123-4567</p>
+    </footer>
+</div>
+
+<script>
+    // 页面导航
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const pageId = this.getAttribute('data-page');
+
+            // 更新导航激活状态
+            document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
+            this.classList.add('active');
+
+            // 显示对应页面
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        });
+    });
+
+    // 选择账户类型
+    document.querySelectorAll('#register .select-option[data-value]').forEach(option => {
+        option.addEventListener('click', function() {
+            const parent = this.parentElement;
+            const inputId = parent.nextElementSibling.id;
+
+            // 移除同一组中其他选项的选中状态
+            parent.querySelectorAll('.select-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // 设置当前选项为选中状态
+            this.classList.add('selected');
+
+            // 更新隐藏输入框的值
+            document.getElementById(inputId).value = this.getAttribute('data-value');
+        });
+    });
+
+    // =============== 后端API接口函数 ===============
+    const api = {
+        // 1. 显示后端返回结果的函数
+        showBackendResult(isSuccess, message, data = null) {
+            const icon = isSuccess ? '✅' : '❌';
+            console.log(`${icon} ${message}`);
+            if (data) console.log('📊 数据:', data);
+
+            // 简单提示
+            alert(`${icon} ${message}`);
+        },
+
+        // 2. 注册账户 - 只发送请求
+        async registerAccount() {
+            const phone = document.getElementById('phone').value;
+            const accountType = document.getElementById('accountType').value;
+            const branchType = document.getElementById('branchType').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            try {
+                const response = await fetch('http://localhost:8080/api/register-account', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        phone,
+                        accountType,
+                        branchType,
+                        password,
+                        confirmPassword
+                    })
+                });
+
+                const result = await response.json();
+                this.showBackendResult(result.success, result.message, result.data);
+
+                // 显示注册结果
+                const resultBox = document.getElementById('registerResult');
+                const resultContent = document.getElementById('registerResultContent');
+
+                if (result.success) {
+                    resultContent.innerHTML = `
+                    <p>${result.message}</p>
+                    ${result.data ? `
+                    <p><strong>注册详情：</strong></p>
+                    <ul>
+                        <li>手机号码：${phone}</li>
+                        <li>账户类型：${accountType === 'personal' ? '个人账户' : '企业账户'}</li>
+                        <li>分行类型：${getBranchName(branchType)}</li>
+                        <li>账户号码：${result.data.accountNumber || ''}</li>
+                        <li>账户余额：¥${result.data.balance ? result.data.balance : '0.00'}</li>
+                    </ul>
+                    ` : ''}
+                `;
+
+                    // 清空表单
+                    document.getElementById('phone').value = '';
+                    document.getElementById('password').value = '';
+                    document.getElementById('confirmPassword').value = '';
+                } else {
+                    resultContent.innerHTML = `<p>${result.message || '注册失败'}</p>`;
+                }
+
+                resultBox.classList.remove('hidden');
+
+            } catch (error) {
+                this.showBackendResult(false, `网络错误: ${error.message}`);
+            }
+        },
+
+        // 3. 查询账户 - 只发送请求
+        async searchAccountByPhone() {
+            const phone = document.getElementById('searchPhone').value;
+
+            try {
+                const response = await fetch(`http://localhost:8080/api/search-account?phone=${phone}`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                const result = await response.json();
+                this.showBackendResult(result.success, result.message, result.data);
+
+                // 显示查询结果
+                const resultBox = document.getElementById('searchResult');
+                const resultContent = document.getElementById('searchResultContent');
+
+                if (result.success && result.data && result.data.accounts) {
+                    let html = `<p>${result.message || '查询成功'}</p>`;
+                    if (result.data.accounts.length > 0) {
+                        html += `<p>找到 ${result.data.accounts.length} 个关联账户：</p>`;
+                        html += '<ul>';
+                        result.data.accounts.forEach(account => {
+                            html += `
+                            <li>
+                                <strong>账户号码：</strong>${account.accountNumber || ''}<br>
+                                <strong>账户类型：</strong>${account.accountType || ''}<br>
+                                <strong>开户分行：</strong>${account.branch || ''}<br>
+                                <strong>账户余额：</strong>¥${account.balance ? account.balance.toFixed(2) : '0.00'}
+                            </li>
+                        `;
+                        });
+                        html += '</ul>';
+                    } else {
+                        html += '<p>未找到与该手机号关联的账户。</p>';
+                    }
+                    resultContent.innerHTML = html;
+                } else {
+                    resultContent.innerHTML = `<p>${result.message || '查询失败'}</p>`;
+                }
+
+                resultBox.classList.remove('hidden');
+
+            } catch (error) {
+                this.showBackendResult(false, `网络错误: ${error.message}`);
+            }
+        },
+
+        // 4. 验证账户 - 只发送请求
+        async verifyAccount(account, password) {
+            try {
+                const response = await fetch('http://localhost:8080/api/verify-account', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ account, password })
+                });
+
+                const result = await response.json();
+                this.showBackendResult(result.success, result.message, result.data);
+
+                return result;
+
+            } catch (error) {
+                this.showBackendResult(false, `网络错误: ${error.message}`);
+                return { success: false, message: '网络错误' };
+            }
+        },
+
+        // 5. 存款 - 只发送请求
+        async deposit(account, amount) {
+            try {
+                const response = await fetch('http://localhost:8080/api/deposit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        account,
+                        amount: parseFloat(amount)
+                    })
+                });
+
+                const result = await response.json();
+                this.showBackendResult(result.success, result.message, result.data);
+
+                return result;
+
+            } catch (error) {
+                this.showBackendResult(false, `网络错误: ${error.message}`);
+                return { success: false, message: '网络错误' };
+            }
+        },
+
+        // 6. 取款 - 只发送请求
+        async withdraw(account, amount) {
+            try {
+                const response = await fetch('http://localhost:8080/api/withdraw', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        account,
+                        amount: parseFloat(amount)
+                    })
+                });
+
+                const result = await response.json();
+                this.showBackendResult(result.success, result.message, result.data);
+
+                return result;
+
+            } catch (error) {
+                this.showBackendResult(false, `网络错误: ${error.message}`);
+                return { success: false, message: '网络错误' };
+            }
+        },
+
+        // 7. 转账 - 只发送请求
+        async transfer(fromAccount, toAccount, password, amount) {
+            try {
+                const response = await fetch('http://localhost:8080/api/transfer', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        fromAccount,
+                        toAccount,
+                        password,
+                        amount: parseFloat(amount)
+                    })
+                });
+
+                const result = await response.json();
+                this.showBackendResult(result.success, result.message, result.data);
+
+                return result;
+
+            } catch (error) {
+                this.showBackendResult(false, `网络错误: ${error.message}`);
+                return { success: false, message: '网络错误' };
+            }
+        },
+
+        // 8. 获取风控数据 - 只发送请求
+        async getRiskData() {
+            try {
+                const response = await fetch('http://localhost:8080/api/risk-data', {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                const result = await response.json();
+                this.showBackendResult(result.success, result.message, result.data);
+
+                return result;
+
+            } catch (error) {
+                this.showBackendResult(false, `网络错误: ${error.message}`);
+                return { success: false, message: '网络错误' };
+            }
+        },
+
+        async verifyOldPassword() {
+            const phone = document.getElementById('forgotPhone').value;
+            const oldPassword = document.getElementById('oldPassword').value;
+
+            try {
+                const response = await fetch('http://localhost:8080/api/verify-old-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        phone,
+                        oldPassword
+                    })
+                });
+
+                const result = await response.json();
+
+                // 显示后端返回的结果
+                if (result.success) {
+                    this.showBackendResult(true, result.message || "旧密码验证成功");
+                    // 保存验证成功的手机号
+                    document.getElementById('verifyOldPasswordStep').classList.add('hidden');
+                    document.getElementById('setNewPasswordStep').classList.remove('hidden');
+                    document.getElementById('setNewPasswordStep').style.display = 'block';
+                    document.getElementById('forgotPasswordResult').classList.add('hidden');
+                } else {
+                    this.showBackendResult(false, result.message || "旧密码验证失败");
+                }
+
+                return result;
+
+            } catch (error) {
+                this.showBackendResult(false, `网络错误: ${error.message}`);
+                return { success: false, message: '网络错误' };
+            }
+        },
+
+        // 10. 重置密码 - 只发送请求，后端验证
+        async resetPassword() {
+            const phone = document.getElementById('forgotPhone').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmNewPassword').value;
+
+            try {
+                const response = await fetch('http://localhost:8080/api/reset-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        phone,
+                        newPassword,
+                        confirmPassword
+                    })
+                });
+
+                const result = await response.json();
+                this.showBackendResult(result.success, result.message, result.data);
+
+                // 显示重置结果
+                const resultBox = document.getElementById('forgotPasswordResult');
+                const resultContent = document.getElementById('forgotPasswordResultContent');
+
+                if (result.success) {
+                    resultContent.innerHTML = `
+                    <p>${result.message}</p>
+                    ${result.data ? `
+                    <p><strong>重置详情：</strong></p>
+                    <ul>
+                        <li>手机号码：${phone}</li>
+                        <li>重置时间：${new Date().toLocaleString()}</li>
+                        <li>重置账户数：${result.data.resetCount || 1}</li>
+                        <li>状态：成功</li>
+                    </ul>
+                    ` : ''}
+                `;
+
+                    // 清空表单并返回第一步
+                    resetPasswordForm();
+                } else {
+                    resultContent.innerHTML = `<p>${result.message || '重置密码失败'}</p>`;
+                }
+
+                resultBox.classList.remove('hidden');
+
+                return result;
+
+            } catch (error) {
+                this.showBackendResult(false, `网络错误: ${error.message}`);
+                return { success: false, message: '网络错误' };
+            }
+        },
+
+
+        // 11. 退出登录 - 只发送请求
+        async logout() {
+            try {
+                const response = await fetch('http://localhost:8080/api/logout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                const result = await response.json();
+                this.showBackendResult(result.success, result.message, result.data);
+
+                if (result.success) {
+                    // 延迟1秒后跳转，让用户看到成功消息
+                    setTimeout(() => {
+                        // 跳转到登录页
+                        window.location.href = 'index.html';
+                    }, 1000);
+                }
+
+            } catch (error) {
+                this.showBackendResult(false, `网络错误: ${error.message}`);
+            }
+        }
+    };
+
+    // =============== 按钮事件绑定 ===============
+
+    // 1. 注册账户按钮
+    document.getElementById('registerBtn').addEventListener('click', async function() {
+        await api.registerAccount();
+    });
+
+    // 2. 查询账户按钮
+    document.getElementById('searchAccountBtn').addEventListener('click', async function() {
+        await api.searchAccountByPhone();
+    });
+
+    // 3. 业务处理按钮切换
+    document.getElementById('depositBtn').addEventListener('click', function() {
+        resetTransactionForms();
+        document.getElementById('depositForm').classList.add('active');
+        document.getElementById('transactionResult').classList.add('hidden');
+    });
+
+    document.getElementById('withdrawBtn').addEventListener('click', function() {
+        resetTransactionForms();
+        document.getElementById('withdrawForm').classList.add('active');
+        document.getElementById('transactionResult').classList.add('hidden');
+    });
+
+    document.getElementById('transferBtn').addEventListener('click', function() {
+        resetTransactionForms();
+        document.getElementById('transferForm').classList.add('active');
+        document.getElementById('transactionResult').classList.add('hidden');
+    });
+
+    // 4. 存款验证按钮
+    document.getElementById('verifyDepositBtn').addEventListener('click', async function() {
+        const account = document.getElementById('depositAccount').value;
+        const password = document.getElementById('depositPassword').value;
+
+        const result = await api.verifyAccount(account, password);
+
+        if (result && result.success) {
+            showAlert('验证成功！现在可以输入存款金额。', 'success');
+            document.getElementById('depositAmountGroup').classList.remove('hidden');
+        }
+    });
+
+    // 5. 存款提交按钮
+    document.getElementById('submitDepositBtn').addEventListener('click', async function() {
+        const account = document.getElementById('depositAccount').value;
+        const amount = document.getElementById('depositAmount').value;
+
+        const result = await api.deposit(account, amount);
+        showTransactionResult(result);
+    });
+
+    // 6. 取款验证按钮
+    document.getElementById('verifyWithdrawBtn').addEventListener('click', async function() {
+        const account = document.getElementById('withdrawAccount').value;
+        const password = document.getElementById('withdrawPassword').value;
+
+        const result = await api.verifyAccount(account, password);
+
+        if (result && result.success) {
+            showAlert('验证成功！现在可以输入取款金额。', 'success');
+            document.getElementById('withdrawAmountGroup').classList.remove('hidden');
+        }
+    });
+
+    // 7. 取款提交按钮
+    document.getElementById('submitWithdrawBtn').addEventListener('click', async function() {
+        const account = document.getElementById('withdrawAccount').value;
+        const amount = document.getElementById('withdrawAmount').value;
+
+        const result = await api.withdraw(account, amount);
+        showTransactionResult(result);
+    });
+
+    // 8. 转账提交按钮
+    document.getElementById('submitTransferBtn').addEventListener('click', async function() {
+        const fromAccount = document.getElementById('fromAccount').value;
+        const toAccount = document.getElementById('toAccount').value;
+        const password = document.getElementById('transferPassword').value;
+        const amount = document.getElementById('transferAmount').value;
+
+        const result = await api.transfer(fromAccount, toAccount, password, amount);
+        showTransactionResult(result);
+    });
+
+    // 9. 显示风控数据按钮
+    document.getElementById('showRiskDataBtn').addEventListener('click', async function() {
+        const result = await api.getRiskData();
+
+        if (result && result.success && result.data) {
+            const tableBody = document.querySelector('#riskTable tbody');
+            tableBody.innerHTML = '';
+
+            if (result.data.riskRecords && result.data.riskRecords.length > 0) {
+                result.data.riskRecords.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${item.id || ''}</td>
+                        <td>${item.account || ''}</td>
+                        <td>${item.riskType || ''}</td>
+                        <td><span class="risk-level risk-${item.riskLevel || ''}">${item.riskLevel || ''}</span></td>
+                        <td>${item.time ? new Date(item.time).toLocaleString() : ''}</td>
+                        <td>${item.status || ''}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+                // 添加CSS样式
+                const style = document.createElement('style');
+                style.textContent = `
+                    .risk-高 { background-color: #f8d7da; color: #721c24; padding: 5px 10px; border-radius: 4px; }
+                    .risk-中 { background-color: #fff3cd; color: #856404; padding: 5px 10px; border-radius: 4px; }
+                    .risk-低 { background-color: #d1ecf1; color: #0c5460; padding: 5px 10px; border-radius: 4px; }
+                `;
+                document.head.appendChild(style);
+
+                document.getElementById('riskTableContainer').classList.remove('hidden');
+            } else {
+                showAlert('暂无风控数据', 'info');
+            }
+        }
+    });
+    //10.
+    // 验证旧密码按钮
+    document.getElementById('verifyOldPasswordBtn').addEventListener('click', async function() {
+        await api.verifyOldPassword();
+    });
+
+    // 提交新密码按钮
+    document.getElementById('submitNewPasswordBtn').addEventListener('click', async function() {
+        await api.resetPassword();
+    });
+
+    // 返回重新验证按钮
+    document.getElementById('backToVerifyBtn').addEventListener('click', function() {
+        // 返回第一步
+        document.getElementById('setNewPasswordStep').classList.add('hidden');
+        document.getElementById('setNewPasswordStep').style.display = 'none';
+        document.getElementById('verifyOldPasswordStep').classList.remove('hidden');
+        document.getElementById('forgotPasswordResult').classList.add('hidden');
+    });
+
+    // 11. 退出登录按钮
+    document.getElementById('logoutBtn').addEventListener('click', async function() {
+        if (confirm('确定要退出登录吗？')) {
+            await api.logout();
+        }
+    });
+
+    // =============== 工具函数 ===============
+
+    function resetTransactionForms() {
+        document.querySelectorAll('.verification-step').forEach(form => {
+            form.classList.remove('active');
+            form.classList.add('hidden');
+        });
+
+        document.getElementById('depositAmountGroup').classList.add('hidden');
+        document.getElementById('withdrawAmountGroup').classList.add('hidden');
+    }
+
+    function showTransactionResult(result) {
+        const resultBox = document.getElementById('transactionResult');
+        const resultContent = document.getElementById('transactionResultContent');
+
+        if (result && result.success) {
+            resultContent.innerHTML = `
+                <p>${result.message || '操作成功'}</p>
+                ${result.data && result.data.transaction ? `
+                <p><strong>交易详情：</strong></p>
+                <ul>
+                    <li>交易时间：${new Date().toLocaleString()}</li>
+                    <li>交易状态：成功</li>
+                    <li>账户余额：¥${result.data.transaction.newBalance ? result.data.transaction.newBalance.toFixed(2) : '未知'}</li>
+                    <li>交易流水号：${result.data.transaction.transactionId || 'TR' + Date.now()}</li>
+                </ul>
+                ` : ''}
+            `;
+
+            // 清空表单
+            resetTransactionForms();
+            document.querySelectorAll('.verification-step .form-control').forEach(input => {
+                input.value = '';
+            });
+        } else {
+            resultContent.innerHTML = `<p>${result.message || '操作失败'}</p>`;
+        }
+
+        resultBox.classList.remove('hidden');
+    }
+
+    function getBranchName(branchCode) {
+        const branches = {
+            'beijing': '北京分行',
+            'shanghai': '上海分行',
+            'guangzhou': '广州分行',
+            'shenzhen': '深圳分行'
+        };
+        return branches[branchCode] || '未知分行';
+    }
+
+    function showAlert(message, type) {
+        // 移除现有的提示
+        const existingAlert = document.querySelector('.alert');
+        if (existingAlert) existingAlert.remove();
+
+        // 创建新的提示
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type}`;
+        alertDiv.textContent = message;
+
+        // 插入到页面顶部
+        document.querySelector('.container').insertBefore(alertDiv, document.querySelector('header'));
+
+        // 5秒后自动移除
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.remove();
+            }
+        }, 5000);
+    }
+
+    // 页面加载时默认显示存款界面
+    document.getElementById('depositForm').classList.add('active');
+</script>
+</body>
+</html>

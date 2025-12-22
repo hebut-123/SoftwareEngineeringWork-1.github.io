@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户登录与注册</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .form-container {
+            padding: 40px 35px;
+            transition: transform 0.6s ease-in-out;
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-weight: 600;
+            font-size: 28px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6a11cb;
+            font-size: 18px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px 15px 15px 50px;
+            border: 2px solid #e1e1e1;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background-color: #f9f9f9;
+        }
+
+        .input-group input:focus {
+            border-color: #6a11cb;
+            box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
+            outline: none;
+            background-color: #fff;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(to right, #5a0cb9, #1c6ae4);
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(106, 17, 203, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #555;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e5e5e5;
+        }
+
+        .switch-form {
+            text-align: center;
+            margin-top: 25px;
+            color: #666;
+            font-size: 15px;
+        }
+
+        .switch-form a {
+            color: #6a11cb;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .switch-form a:hover {
+            text-decoration: underline;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .form-divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            color: #999;
+        }
+
+        .form-divider::before,
+        .form-divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .form-divider span {
+            padding: 0 15px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .logo i {
+            font-size: 42px;
+            color: #6a11cb;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .error-message {
+            color: #ff3860;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .input-group.error input {
+            border-color: #ff3860;
+        }
+
+        .input-group.success input {
+            border-color: #23d160;
+        }
+
+        .password-requirements {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+            display: none;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                max-width: 95%;
+            }
+
+            .form-container {
+                padding: 30px 25px;
+            }
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #888;
+        }
+
+        .form-footer a {
+            color: #6a11cb;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="logo">
+        <i class="fas fa-user-shield"></i>
+    </div>
+
+    <!-- 登录表单 -->
+    <div id="login-form" class="form-container">
+        <h2 class="form-title">用户登录</h2>
+
+        <div class="input-group">
+            <i class="fas fa-phone"></i>
+            <input type="tel" id="login-phone" placeholder="手机号码" maxlength="11">
+            <div class="error-message" id="login-phone-error">请输入有效的手机号码</div>
+        </div>
+
+        <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="login-password" placeholder="登录密码">
+            <div class="error-message" id="login-password-error">密码不能为空</div>
+        </div>
+
+        <button class="btn btn-primary" onclick="login()">登录</button>
+
+        <div class="form-divider">
+            <span>或</span>
+        </div>
+
+        <button class="btn btn-secondary" onclick="switchToRegister()">注册新账号</button>
+
+        <div class="form-footer">
+            <a href="#">忘记密码?</a> | <a href="#">使用帮助</a>
+        </div>
+    </div>
+
+    <!-- 注册表单 -->
+    <div id="register-form" class="form-container hidden">
+        <h2 class="form-title">注册账号</h2>
+
+        <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input type="text" id="register-nickname" placeholder="昵称 (2-10个字符)">
+            <div class="error-message" id="register-nickname-error">昵称长度应为2-10个字符</div>
+        </div>
+
+        <div class="input-group">
+            <i class="fas fa-phone"></i>
+            <input type="tel" id="register-phone" placeholder="手机号码" maxlength="11">
+            <div class="error-message" id="register-phone-error">请输入有效的手机号码</div>
+        </div>
+
+        <div class="input-group">
+            <i class="fas fa-id-card"></i>
+            <input type="text" id="register-idcard" placeholder="身份证号码" maxlength="18">
+            <div class="error-message" id="register-idcard-error">请输入有效的身份证号码</div>
+        </div>
+
+        <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="register-password" placeholder="设置密码 (6-20位)">
+            <div class="error-message" id="register-password-error">密码必须为6-20位字符</div>
+            <div class="password-requirements" id="password-requirements">至少包含字母、数字，可使用特殊字符</div>
+        </div>
+
+        <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="register-confirm-password" placeholder="确认密码">
+            <div class="error-message" id="register-confirm-password-error">两次输入的密码不一致</div>
+        </div>
+
+        <button class="btn btn-primary" onclick="register()">注册账号</button>
+
+        <div class="switch-form">
+            已有账号? <a onclick="switchToLogin()">立即登录</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 切换显示登录表单
+        function switchToLogin() {
+            document.getElementById('login-form').classList.remove('hidden');
+            document.getElementById('register-form').classList.add('hidden');
+        }
+
+        // 切换显示注册表单
+        function switchToRegister() {
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('register-form').classList.remove('hidden');
+        }
+    function showBackendResult(isSuccess, message, data = null) {
+        const icon = isSuccess ? '✅' : '❌';
+        console.log(`${icon} ${message}`);
+        if (data) console.log('📊 数据:', data);
+
+        // 简单提示
+        alert(`${icon} ${message}`);
+    }
+
+    // 2. 登录函数 - 只发送请求
+    async function login() {
+        const phone = document.getElementById('login-phone').value;
+        const password = document.getElementById('login-password').value;
+
+        try {
+            const response = await fetch('http://localhost:8080/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone, password })
+            });
+
+            const result = await response.json();
+            showBackendResult(response.ok, result.message || '登录完成', result.data);
+            if (response.ok && result.success) {
+                // 登录成功，跳转到主页
+                setTimeout(() => {
+                    showBackendResult(true, '登录成功！正在跳转...');
+                },1000);
+
+                // 延迟1秒后跳转，让用户看到成功消息
+                setTimeout(() => {
+                    // 跳转到主页
+                    window.location.href = 'bank-system.html';
+                }, 1000);
+            } else {
+                // 登录失败，显示错误信息
+                showBackendResult(false, result.message || '登录失败');
+            }
+        } catch (error) {
+            showBackendResult(false, `网络错误: ${error.message}`);
+        }
+    }
+
+    // 3. 注册函数 - 只发送请求
+    async function register() {
+        const formData = {
+            nickname: document.getElementById('register-nickname').value,
+            phone: document.getElementById('register-phone').value,
+            idCard: document.getElementById('register-idcard').value,
+            password: document.getElementById('register-password').value,
+            confirmPassword: document.getElementById('register-confirm-password').value
+        };
+
+        try {
+            const response = await fetch('http://localhost:8080/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+            showBackendResult(response.ok, result.message || '注册完成', result.data);
+
+        } catch (error) {
+            showBackendResult(false, `网络错误: ${error.message}`);
+        }
+    }
+    // 初始化：默认显示登录表单
+    window.onload = function() {
+        switchToLogin();
+    };
+
+</script>
+</body>
+</html>
